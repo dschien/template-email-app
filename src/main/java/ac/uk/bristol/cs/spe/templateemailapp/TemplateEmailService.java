@@ -1,5 +1,6 @@
 package ac.uk.bristol.cs.spe.templateemailapp;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
@@ -12,11 +13,9 @@ import java.util.Map;
 @Service
 public class TemplateEmailService {
 
+    @Autowired
     private EmailProvider emailProvider;
 
-    public TemplateEmailService(EmailProvider emailProvider) {
-        this.emailProvider = emailProvider;
-    }
 
     void sendTemplatedEmail(String template, Map<String, List<String>> recipientSubstitutions) {
         for (String recipientEmail : recipientSubstitutions.keySet()) {

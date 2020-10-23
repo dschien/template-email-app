@@ -6,8 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
-@Primary
-@Component
+@Component(value = "mockEmailProvider")
 public class MockEmailProvider implements EmailProvider {
 
     private Map<String, String> results;

@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collections;
@@ -16,9 +18,26 @@ import java.util.Map;
 @SpringBootTest
 public class TemplateEmailServiceTest {
 
+    @Configuration
+    static class ContextConfiguration {
+
+        // this bean will be injected into the OrderServiceTest class
+        @Bean
+        public EmailProvider emailProviderService() {
+            EmailProvider mockEmailProvider = new MockEmailProvider();
+            return mockEmailProvider;
+        }
+
+        @Bean
+        public TemplateEmailService templateEmailService() {
+            return new TemplateEmailService();
+        }
+
+    }
+
 
     @Autowired
-    private EmailProvider emailProvider;
+    private EmailProvider mockEmailProvider;
 
     @Autowired
     TemplateEmailService templateEmailService;
@@ -31,9 +50,8 @@ public class TemplateEmailServiceTest {
 
         templateEmailService.sendTemplatedEmail("{0}", myMap);
 
-        Map<String, String> results = ((MockEmailProvider) emailProvider).getResults();
+        Map<String, String> results = ((MockEmailProvider) mockEmailProvider).getResults();
         Assert.assertTrue(results.get("test@me.com").equals("[1]"));
-
 
     }
 
